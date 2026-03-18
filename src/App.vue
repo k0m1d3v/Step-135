@@ -56,8 +56,9 @@
             :key="monument.id"
             :monument="monument"
             :isActive="monument.id === activeMonumentId"
+            :isSpeaking="monument.id === speakingMonumentId"
             @select="onSelectMonument"
-            @listen="trySpeak"
+            @listen="onListenMonument"
           />
         </div>
       </SectionContainer>
@@ -100,6 +101,8 @@ let tourInterval = null
 const cardGridRef = ref(null)
 
 const isDark = ref(false)
+const speakingMonumentId = ref(null)
+const manuallyStopped = ref(false)
 
 const currentMonumentIndex = computed(() => monuments.findIndex((m) => m.id === activeMonumentId.value))
 const progressPercent = computed(() => {
@@ -192,6 +195,14 @@ function onSelectMonument(id) {
   }
 }
 
+function onListenMonument(monument) {
+  if (speakingMonumentId.value === monument.id) {
+    stopSpeech()
+  } else {
+    trySpeak(monument)
+  }
+}
+
 function toggleTour() {
   if (tourActive.value) {
     stopTour()
@@ -224,6 +235,8 @@ function stopSpeech() {
   if (window.speechSynthesis) {
     window.speechSynthesis.cancel()
   }
+  speakingMonumentId.value = null
+  manuallyStopped.value = true
 }
 
 function trySpeak(monument) {
@@ -231,11 +244,16 @@ function trySpeak(monument) {
   const utterance = new SpeechSynthesisUtterance(`${monument.name}. ${monument.description}. Fun fact: ${monument.funFact}`)
   utterance.rate = 1
   utterance.pitch = 1
+  utterance.lang = 'it-IT' // Imposta la lingua italiana
 
   stopSpeech()
 
-  if (!tourActive.value) {
-    utterance.onend = () => {
+  speakingMonumentId.value = monument.id
+  manuallyStopped.value = false
+
+  utterance.onend = () => {
+    speakingMonumentId.value = null
+    if (!tourActive.value && !manuallyStopped.value) {
       const nextIndex = (currentMonumentIndex.value + 1) % monuments.length
       const next = monuments[nextIndex]
       if (next) {
