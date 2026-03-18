@@ -55,15 +55,31 @@ const baseIconOptions = {
   popupAnchor: [1, -32],
 }
 
-const markerIcon = (isActive) =>
-  L.icon({
-    ...baseIconOptions,
-    className: isActive ? 'marker-icon marker-icon--active' : 'marker-icon',
+const createCustomIcon = (color, isActive) => {
+  const svgIcon = `
+    <svg width="25" height="41" viewBox="0 0 25 41" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12.5 0C5.596 0 0 5.596 0 12.5c0 10.5 12.5 28.5 12.5 28.5s12.5-18 12.5-28.5C25 5.596 19.404 0 12.5 0z" fill="${color}" stroke="#fff" stroke-width="2"/>
+      <circle cx="12.5" cy="12.5" r="6" fill="#fff"/>
+      ${isActive ? '<circle cx="12.5" cy="12.5" r="3" fill="#000"/>' : ''}
+    </svg>
+  `
+  return L.icon({
+    iconUrl: `data:image/svg+xml;base64,${btoa(svgIcon)}`,
+    shadowUrl,
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -32],
   })
+}
+
+const markerIcon = (category, isActive) => {
+  const color = category === 'core' ? '#0ea5e9' : '#f59e0b' // sky-500 for core, amber-500 for extra
+  return createCustomIcon(color, isActive)
+}
 
 const createMarker = (markerData) => {
   const marker = L.marker(markerData.coordinates, {
-    icon: markerIcon(markerData.id === props.activeId),
+    icon: markerIcon(markerData.category, markerData.id === props.activeId),
   })
 
   markerCluster.addLayer(marker)
@@ -110,7 +126,10 @@ const highlightMarker = (id) => {
 
   // update marker icons
   markerMap.forEach((m, key) => {
-    m.setIcon(markerIcon(key === id))
+    const markerData = props.markers.find(m => m.id === key)
+    if (markerData) {
+      m.setIcon(markerIcon(markerData.category, key === id))
+    }
   })
 }
 
@@ -176,6 +195,26 @@ watch(
       map.setView(newCenter, props.zoom)
     }
   }
+)
+
+watch(
+  () => props.markers,
+  (newMarkers) => {
+    if (!markerCluster) return
+    
+    // Clear existing markers
+    markerCluster.clearLayers()
+    markerMap.clear()
+    
+    // Add new markers
+    newMarkers.forEach(createMarker)
+    
+    // Highlight active if exists
+    if (props.activeId && newMarkers.some(m => m.id === props.activeId)) {
+      highlightMarker(props.activeId)
+    }
+  },
+  { deep: true }
 )
 
 onBeforeUnmount(() => {

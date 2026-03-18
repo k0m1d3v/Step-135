@@ -10,12 +10,20 @@
     <div class="space-y-2">
       <div class="flex items-start justify-between gap-3">
         <h3 class="text-base font-semibold text-slate-900 dark:text-slate-100">{{ monument.name }}</h3>
-        <span
-          class="rounded-full bg-indigo-500/15 px-2 py-1 text-xs font-semibold text-indigo-700 dark:text-indigo-200"
-          v-if="isActive"
-        >
-          Active
-        </span>
+        <div class="flex items-center gap-2">
+          <span
+            class="rounded-full px-2 py-1 text-xs font-semibold"
+            :class="monument.category === 'core' ? 'bg-emerald-500/15 text-emerald-700 dark:text-emerald-200' : 'bg-amber-500/15 text-amber-700 dark:text-amber-200'"
+          >
+            {{ monument.category === 'core' ? 'Core' : 'Extra' }}
+          </span>
+          <span
+            class="rounded-full bg-indigo-500/15 px-2 py-1 text-xs font-semibold text-indigo-700 dark:text-indigo-200"
+            v-if="isActive"
+          >
+            Active
+          </span>
+        </div>
       </div>
       <p class="text-sm leading-relaxed text-slate-600 dark:text-slate-300">{{ monument.description }}</p>
       <p class="text-sm text-slate-500 dark:text-slate-400">

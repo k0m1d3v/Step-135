@@ -5,6 +5,7 @@ export const monuments = [
     coordinates: [41.9058, 12.4820],
     description: 'Questa fontana barocca si trova alla base della Scalinata di Trinità dei Monti e sembra una nave semisommersa. Progettata da Pietro Bernini negli anni 1620, fu una delle prime fontane di Roma a prelevare acqua direttamente dagli acquedotti cittadini. I visitatori spesso gettano monete al suo interno per buona fortuna, proprio come alla Fontana di Trevi.',
     funFact: 'La leggenda dice che la fontana fu ispirata da una barca che galleggiò nella piazza durante un\'inondazione del Tevere.',
+    category: 'core',
   },
   {
     id: 'steps',
@@ -12,6 +13,7 @@ export const monuments = [
     coordinates: [41.9059, 12.4824],
     description: 'Questa grandiosa scalinata ha 135 gradini che conducono alla chiesa di Trinità dei Monti. Costruita nel XVIII secolo con disegni di Francesco de Sanctis, fu finanziata dalla Francia ed è stata un luogo popolare per osservare le persone e gli eventi. Nelle giornate di sole, locali e turisti si riuniscono qui per rilassarsi, chiacchierare e godere delle viste sulla città.',
     funFact: 'La Scalinata di Trinità dei Monti fu costruita con finanziamenti francesi all\'inizio del 1700 e un tempo fu utilizzata come passerella per sfilate di moda.',
+    category: 'core',
   },
   {
     id: 'trinitadeimonti',
@@ -19,6 +21,31 @@ export const monuments = [
     coordinates: [41.9064, 12.4828],
     description: 'Appollaiata in cima alla Scalinata di Trinità dei Monti, questa chiesa rinascimentale offre viste mozzafiato su Piazza di Spagna. Fondata nel XVI secolo da monaci francesi, ospita bellissime opere d\'arte ed è nota per le sue torri campanarie gemelle. All\'interno, si possono trovare affreschi e sculture che raccontano storie dalla Bibbia.',
     funFact: 'La chiesa ospita un famoso dipinto della Vergine Maria che si dice protegga gli innamorati che la visitano.',
+    category: 'core',
+  },
+  {
+    id: 'obelisco-sallustiano',
+    name: 'Obelisco Sallustiano',
+    coordinates: [41.9072, 12.4978],
+    description: 'Questo antico obelisco egizio si trova in Piazza Sallustio e risale al regno di Ramses II. Alto circa 13 metri, fu portato a Roma nel I secolo d.C. e rappresenta uno dei numerosi obelischi antichi presenti in città. La sua posizione offre una vista panoramica sulla zona circostante.',
+    funFact: 'L\'obelisco fu scoperto sepolto sotto Piazza Sallustio nel 1882 e rappresenta uno dei pochi monumenti egizi originali ancora in piedi a Roma.',
+    category: 'extra',
+  },
+  {
+    id: 'casa-keats',
+    name: 'Casa di John Keats',
+    coordinates: [41.9056, 12.4817],
+    description: 'Questa casa storica fu l\'ultima residenza del poeta romantico inglese John Keats, che vi morì di tubercolosi nel 1821. Oggi è un museo dedicato alla sua vita e alle opere, con una collezione di manoscritti e oggetti personali. Si trova vicino alla Scalinata di Trinità dei Monti.',
+    funFact: 'Keats compose alcune delle sue poesie più famose proprio in questa casa, inclusa "Ode to a Nightingale".',
+    category: 'extra',
+  },
+  {
+    id: 'palazzo-spagna',
+    name: 'Palazzo di Spagna',
+    coordinates: [41.9035, 12.4832],
+    description: 'Questo palazzo storico ospita l\'ambasciata spagnola presso la Santa Sede e prende il nome dalla Spagna. Costruito nel XVII secolo, presenta una facciata elegante e un cortile interno. È situato ai piedi della Scalinata di Trinità dei Monti e rappresenta un importante legame diplomatico.',
+    funFact: 'Il palazzo fu costruito per ospitare i diplomatici spagnoli e ha mantenuto la sua funzione diplomatica per secoli.',
+    category: 'extra',
   },
 ]
 

@@ -23,7 +23,7 @@
         </template>
 
         <MapView
-          :markers="monuments"
+          :markers="visibleMonuments"
           :center="defaultCenter"
           :activeId="activeMonumentId"
           @update:activeId="onSelectMonument"
@@ -39,7 +39,7 @@
             </div>
 
             <div class="flex flex-col items-start gap-2 text-sm text-slate-500 dark:text-slate-400 md:items-end">
-              <span class="font-medium">Progress: {{ currentMonumentIndex + 1 }} / {{ monuments.length }}</span>
+              <span class="font-medium">Progress: {{ currentMonumentIndex + 1 }} / {{ visibleMonuments.length }}</span>
               <div class="h-1 w-40 overflow-hidden rounded-full bg-slate-200 dark:bg-slate-800">
                 <div
                   class="h-full rounded-full bg-sky-500 transition-all"
@@ -48,15 +48,35 @@
               </div>
             </div>
           </div>
+
+          <div class="flex items-center justify-center gap-2 mt-4">
+            <button
+              type="button"
+              class="px-4 py-2 text-sm font-medium rounded-full transition-colors"
+              :class="showExtra ? 'bg-slate-200 text-slate-700 dark:bg-slate-700 dark:text-slate-300' : 'bg-sky-500 text-white'"
+              @click="showExtra = false"
+            >
+              Core Experience
+            </button>
+            <button
+              type="button"
+              class="px-4 py-2 text-sm font-medium rounded-full transition-colors"
+              :class="showExtra ? 'bg-sky-500 text-white' : 'bg-slate-200 text-slate-700 dark:bg-slate-700 dark:text-slate-300'"
+              @click="showExtra = true"
+            >
+              Explore More
+            </button>
+          </div>
         </template>
 
         <div ref="cardGridRef" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           <MonumentCard
-            v-for="monument in monuments"
+            v-for="monument in visibleMonuments"
             :key="monument.id"
             :monument="monument"
             :isActive="monument.id === activeMonumentId"
             :isSpeaking="monument.id === speakingMonumentId"
+            class="animate-fade-in"
             @select="onSelectMonument"
             @listen="onListenMonument"
           />
@@ -103,11 +123,16 @@ const cardGridRef = ref(null)
 const isDark = ref(false)
 const speakingMonumentId = ref(null)
 const manuallyStopped = ref(false)
+const showExtra = ref(false)
 
-const currentMonumentIndex = computed(() => monuments.findIndex((m) => m.id === activeMonumentId.value))
+const visibleMonuments = computed(() => 
+  showExtra.value ? monuments : monuments.filter(m => m.category === 'core')
+)
+
+const currentMonumentIndex = computed(() => visibleMonuments.value.findIndex((m) => m.id === activeMonumentId.value))
 const progressPercent = computed(() => {
   const idx = currentMonumentIndex.value
-  return idx < 0 ? 0 : ((idx + 1) / monuments.length) * 100
+  return idx < 0 ? 0 : ((idx + 1) / visibleMonuments.value.length) * 100
 })
 
 const storageKeys = {
